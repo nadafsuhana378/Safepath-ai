@@ -567,7 +567,7 @@ const arrived = progress >= 1;
     </div>
   </div>
 )}
-        <div className="absolute top-3 left-5 right-5 flex items-center justify-between">
+        <div className="absolute top-[72px] left-5 right-5 flex items-center justify-between">
           <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-full" style={{ background: `${r.color}1A`, color: r.color }}>
             ● {r.label} route
           </span>
