@@ -276,86 +276,483 @@ function LiveMap({ city, route, progress, view, hazardPin }) {
 
 /* ---------------- Dashboard ---------------- */
 
-function Dashboard({ mode, onPlanTrip, tripsThisMonth, avgScore, hazardsReportedCount, tripHistory }) {
+function Dashboard({
+  mode,
+  onPlanTrip,
+  tripsThisMonth,
+  avgScore,
+  hazardsReportedCount,
+  tripHistory
+}) {
   const { label, Icon, timeStr } = mode;
+
   return (
-<div className="flex flex-col h-full w-full bg-white overflow-y-auto">
-      <div className="px-5 pt-5 pb-4">
-        <div className="flex items-center justify-between mb-4">
+    <div className="w-full h-full bg-[#EEF2F8] overflow-y-auto">
+      
+      {/* Dashboard Content */}
+      <div className="max-w-[1400px] mx-auto p-5 md:p-7 lg:p-8">
+
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
           <div>
-            <p className="text-[11px] text-[#8A94A6]">{timeStr}</p>
-            <h2 className="text-xl font-semibold text-[#101828]" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>
-              Hi, Suhana
-            </h2>
+            <p className="text-[12px] text-[#8A94A6] mb-1">
+              {timeStr} · {label}
+            </p>
+
+            <h1
+              className="text-2xl md:text-3xl font-semibold text-[#101828]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Good evening, Suhana
+            </h1>
+
+            <p className="text-sm text-[#667085] mt-1">
+              Here's your safety overview for today.
+            </p>
           </div>
-          <div className="flex items-center gap-1.5 rounded-full border border-[#E2E7F0] bg-[#F3F5FA] px-3 py-1.5">
-            <Icon size={13} color="#B45309" />
-            <span className="text-[11px] font-medium text-[#4A5468]">{label}</span>
-          </div>
+
+          <button
+            onClick={onPlanTrip}
+            className="flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-sm hover:opacity-90 transition"
+            style={{
+              background: "#0D9488",
+              fontFamily: "'Space Grotesk', sans-serif"
+            }}
+          >
+            <Search size={17} />
+            Plan a new trip
+          </button>
         </div>
 
-        <div className="rounded-2xl p-4 text-white mb-5" style={{ background: "linear-gradient(135deg,#0D9488,#0F766E)" }}>
-          <p className="text-[11px] opacity-80 mb-1">Area safety index · Satara</p>
-          <div className="flex items-end justify-between">
-            <span className="text-3xl font-semibold" style={{ fontFamily: "'Space Grotesk',sans-serif" }}>84<span className="text-sm opacity-70">/100</span></span>
-            <span className="flex items-center gap-1 text-[11px] bg-white/15 px-2 py-1 rounded-full"><TrendingUp size={12} /> +6 this week</span>
+        {/* KPI CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+
+          <div className="bg-white rounded-2xl border border-[#E2E7F0] p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-2.5 rounded-xl bg-[#E8F7F5]">
+                <Route size={19} color="#0D9488" />
+              </div>
+
+              <span className="text-[11px] font-medium text-[#0D9488] bg-[#E8F7F5] px-2 py-1 rounded-full">
+                This month
+              </span>
+            </div>
+
+            <p
+              className="text-3xl font-semibold text-[#101828]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              {tripsThisMonth}
+            </p>
+
+            <p className="text-xs text-[#667085] mt-1">
+              Trips completed
+            </p>
+
+            <p className="text-[11px] text-[#0D9488] mt-3">
+              4 trips in Pune
+            </p>
           </div>
+
+
+          <div className="bg-white rounded-2xl border border-[#E2E7F0] p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-2.5 rounded-xl bg-[#E8F7F5]">
+                <Gauge size={19} color="#0D9488" />
+              </div>
+
+              <span className="text-[11px] font-medium text-[#0D9488] bg-[#E8F7F5] px-2 py-1 rounded-full">
+                Excellent
+              </span>
+            </div>
+
+            <p
+              className="text-3xl font-semibold text-[#101828]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              {avgScore}
+              <span className="text-sm text-[#98A2B3]">/100</span>
+            </p>
+
+            <p className="text-xs text-[#667085] mt-1">
+              Average safety score
+            </p>
+
+            <p className="text-[11px] text-[#0D9488] mt-3">
+              ↑ 6 points this week
+            </p>
+          </div>
+
+
+          <div className="bg-white rounded-2xl border border-[#E2E7F0] p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-2.5 rounded-xl bg-[#FFF7E8]">
+                <Flag size={19} color="#D97706" />
+              </div>
+
+              <span className="text-[11px] font-medium text-[#D97706] bg-[#FFF7E8] px-2 py-1 rounded-full">
+                Community
+              </span>
+            </div>
+
+            <p
+              className="text-3xl font-semibold text-[#101828]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              {hazardsReportedCount}
+            </p>
+
+            <p className="text-xs text-[#667085] mt-1">
+              Hazards reported
+            </p>
+
+            <p className="text-[11px] text-[#667085] mt-3">
+              By you & nearby users
+            </p>
+          </div>
+
+
+          <div className="bg-white rounded-2xl border border-[#E2E7F0] p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-2.5 rounded-xl bg-[#EEF4FF]">
+                <Footprints size={19} color="#475467" />
+              </div>
+
+              <span className="text-[11px] font-medium text-[#475467] bg-[#EEF4FF] px-2 py-1 rounded-full">
+                Active
+              </span>
+            </div>
+
+            <p
+              className="text-3xl font-semibold text-[#101828]"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              46
+              <span className="text-sm text-[#98A2B3]"> km</span>
+            </p>
+
+            <p className="text-xs text-[#667085] mt-1">
+              Safe distance covered
+            </p>
+
+            <p className="text-[11px] text-[#667085] mt-3">
+              Across 12 journeys
+            </p>
+          </div>
+
         </div>
 
-        <div className="grid grid-cols-2 gap-3 mb-5">
-          <StatCard icon={Route} label="Trips this month" value={tripsThisMonth} sub="4 in Pune" />
-          <StatCard icon={Gauge} label="Average safety score" value={avgScore} />
-          <StatCard icon={Flag} label="Hazards reported" value={hazardsReportedCount} sub="By you & nearby users" />
-          <StatCard icon={Footprints} label="Safe distance covered" value="46 km" />
-        </div>
 
-        <div className="rounded-xl border border-[#E2E7F0] bg-white p-4 mb-5">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-[12px] font-medium text-[#101828]">This week's safety score</p>
-            <span className="text-[10px] text-[#8A94A6]">daily avg</span>
-          </div>
-          <div style={{ width: "100%", height: 90 }}>
-            <ResponsiveContainer>
-              <BarChart data={WEEKLY} barCategoryGap={10}>
-                <XAxis dataKey="d" tick={{ fontSize: 10, fill: "#8A94A6" }} axisLine={false} tickLine={false} />
-                <Tooltip
-                  cursor={{ fill: "#F3F5FA" }}
-                  contentStyle={{ fontSize: 11, borderRadius: 8, border: "1px solid #E2E7F0" }}
-                />
-                <Bar dataKey="score" radius={[5, 5, 0, 0]}>
-                  {WEEKLY.map((w, i) => (
-                    <Cell key={i} fill={w.score >= 80 ? "#0D9488" : w.score >= 60 ? "#D97706" : "#DC2626"} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        {/* MAIN ANALYTICS GRID */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-6">
 
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-[12px] font-medium text-[#101828]">Recent trips</p>
-        </div>
-        <div className="flex flex-col gap-2 mb-5">
-          {tripHistory.map((t, i) => (
-            <div key={i} className="flex items-center gap-3 rounded-xl border border-[#E2E7F0] px-3.5 py-3">
-              <ScoreBadge value={t.score} color={t.score >= 80 ? "#0D9488" : t.score >= 60 ? "#D97706" : "#DC2626"} />
-              <div className="flex-1 min-w-0">
-                <p className="text-[12.5px] font-medium text-[#101828] truncate">{t.from} → {t.to}</p>
-                <p className="text-[10.5px] text-[#8A94A6]">{t.city} · {t.time} · {t.mode}</p>
+          {/* WEEKLY CHART */}
+          <div className="xl:col-span-2 bg-white rounded-2xl border border-[#E2E7F0] p-5 md:p-6">
+
+            <div className="flex items-start justify-between mb-5">
+              <div>
+                <h2
+                  className="text-base font-semibold text-[#101828]"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  Weekly safety performance
+                </h2>
+
+                <p className="text-xs text-[#8A94A6] mt-1">
+                  Average safety score by day
+                </p>
+              </div>
+
+              <div className="flex items-center gap-1.5 text-[11px] text-[#0D9488]">
+                <TrendingUp size={14} />
+                +6 this week
               </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      <div className="sticky bottom-0 px-5 pb-5 pt-3 bg-gradient-to-t from-white via-white to-transparent">
-        <button
-          onClick={onPlanTrip}
-          className="w-full rounded-full py-3.5 font-semibold text-sm text-white flex items-center justify-center gap-2"
-          style={{ background: "#0D9488", fontFamily: "'Space Grotesk',sans-serif" }}
-        >
-          <Search size={15} /> Plan a new trip
-        </button>
+            <div style={{ width: "100%", height: 230 }}>
+              <ResponsiveContainer>
+                <BarChart data={WEEKLY} barCategoryGap={22}>
+
+                  <XAxis
+                    dataKey="d"
+                    tick={{
+                      fontSize: 11,
+                      fill: "#8A94A6"
+                    }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+
+                  <Tooltip
+                    cursor={{ fill: "#F3F5FA" }}
+                    contentStyle={{
+                      fontSize: 11,
+                      borderRadius: 10,
+                      border: "1px solid #E2E7F0"
+                    }}
+                  />
+
+                  <Bar
+                    dataKey="score"
+                    radius={[7, 7, 0, 0]}
+                  >
+                    {WEEKLY.map((w, i) => (
+                      <Cell
+                        key={i}
+                        fill={
+                          w.score >= 80
+                            ? "#0D9488"
+                            : w.score >= 60
+                            ? "#D97706"
+                            : "#DC2626"
+                        }
+                      />
+                    ))}
+                  </Bar>
+
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+          </div>
+
+
+          {/* AREA SAFETY */}
+          <div
+            className="rounded-2xl p-6 text-white relative overflow-hidden"
+            style={{
+              background:
+                "linear-gradient(145deg, #0D9488 0%, #0F766E 100%)"
+            }}
+          >
+
+            <div className="relative z-10">
+
+              <div className="flex items-center justify-between mb-7">
+                <div>
+                  <p className="text-xs text-white/70">
+                    Current area
+                  </p>
+
+                  <h2
+                    className="text-lg font-semibold mt-1"
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif"
+                    }}
+                  >
+                    Satara
+                  </h2>
+                </div>
+
+                <div className="p-2 rounded-xl bg-white/10">
+                  <ShieldCheck size={20} />
+                </div>
+              </div>
+
+
+              <p className="text-xs text-white/70">
+                Area safety index
+              </p>
+
+              <div className="flex items-end gap-2 mt-1">
+
+                <span
+                  className="text-5xl font-semibold"
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif"
+                  }}
+                >
+                  84
+                </span>
+
+                <span className="text-sm text-white/60 mb-2">
+                  /100
+                </span>
+
+              </div>
+
+
+              <div className="w-full h-2 bg-white/15 rounded-full mt-5 overflow-hidden">
+                <div
+                  className="h-full bg-white rounded-full"
+                  style={{ width: "84%" }}
+                />
+              </div>
+
+
+              <div className="flex items-center gap-2 mt-5 text-xs">
+                <TrendingUp size={14} />
+                <span>
+                  6 points higher than last week
+                </span>
+              </div>
+
+
+              <div className="grid grid-cols-3 gap-2 mt-7">
+
+                <div className="rounded-xl bg-white/10 p-3">
+                  <p className="text-[10px] text-white/60">
+                    Lighting
+                  </p>
+                  <p className="text-sm font-semibold mt-1">
+                    88%
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-white/10 p-3">
+                  <p className="text-[10px] text-white/60">
+                    Crowd
+                  </p>
+                  <p className="text-sm font-semibold mt-1">
+                    81%
+                  </p>
+                </div>
+
+                <div className="rounded-xl bg-white/10 p-3">
+                  <p className="text-[10px] text-white/60">
+                    Incidents
+                  </p>
+                  <p className="text-sm font-semibold mt-1">
+                    Low
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* RECENT TRIPS */}
+        <div className="bg-white rounded-2xl border border-[#E2E7F0] overflow-hidden">
+
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-5 md:px-6 py-5 border-b border-[#E2E7F0]">
+
+            <div>
+              <h2
+                className="text-base font-semibold text-[#101828]"
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif"
+                }}
+              >
+                Recent trips
+              </h2>
+
+              <p className="text-xs text-[#8A94A6] mt-1">
+                Your latest journeys and their safety scores
+              </p>
+            </div>
+
+            <button className="text-xs font-medium text-[#0D9488] hover:underline">
+              View all trips
+            </button>
+
+          </div>
+
+
+          {/* Desktop table */}
+          <div className="hidden md:block">
+
+            <div className="grid grid-cols-[2fr_1fr_1fr_1fr] px-6 py-3 bg-[#F8FAFC] text-[10px] uppercase tracking-wider text-[#8A94A6]">
+              <span>Journey</span>
+              <span>Location</span>
+              <span>Time</span>
+              <span>Safety</span>
+            </div>
+
+            {tripHistory.map((t, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-[2fr_1fr_1fr_1fr] items-center px-6 py-4 border-t border-[#EEF2F6]"
+              >
+
+                <div>
+                  <p className="text-sm font-medium text-[#101828]">
+                    {t.from} → {t.to}
+                  </p>
+
+                  <p className="text-[11px] text-[#8A94A6] mt-1">
+                    {t.mode} route
+                  </p>
+                </div>
+
+                <p className="text-xs text-[#667085]">
+                  {t.city}
+                </p>
+
+                <p className="text-xs text-[#667085]">
+                  {t.time}
+                </p>
+
+                <div className="flex items-center gap-2">
+                  <ScoreBadge
+                    value={t.score}
+                    size="sm"
+                    color={
+                      t.score >= 80
+                        ? "#0D9488"
+                        : t.score >= 60
+                        ? "#D97706"
+                        : "#DC2626"
+                    }
+                  />
+
+                  <span className="text-[11px] text-[#667085]">
+                    /100
+                  </span>
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+
+
+          {/* Mobile list */}
+          <div className="md:hidden">
+
+            {tripHistory.map((t, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 px-4 py-4 border-t border-[#EEF2F6]"
+              >
+
+                <ScoreBadge
+                  value={t.score}
+                  color={
+                    t.score >= 80
+                      ? "#0D9488"
+                      : t.score >= 60
+                      ? "#D97706"
+                      : "#DC2626"
+                  }
+                />
+
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-[#101828] truncate">
+                    {t.from} → {t.to}
+                  </p>
+
+                  <p className="text-[10px] text-[#8A94A6] mt-1">
+                    {t.city} · {t.time}
+                  </p>
+                </div>
+
+                <ChevronRight
+                  size={15}
+                  color="#98A2B3"
+                />
+
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+
       </div>
     </div>
   );
