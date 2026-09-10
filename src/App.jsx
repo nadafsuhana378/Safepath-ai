@@ -279,7 +279,7 @@ function LiveMap({ city, route, progress, view, hazardPin }) {
 function Dashboard({ mode, onPlanTrip, tripsThisMonth, avgScore, hazardsReportedCount, tripHistory }) {
   const { label, Icon, timeStr } = mode;
   return (
-    <div className="flex flex-col h-full bg-white overflow-y-auto">
+<div className="flex flex-col h-full w-full bg-white overflow-y-auto">
       <div className="px-5 pt-5 pb-4">
         <div className="flex items-center justify-between mb-4">
           <div>
