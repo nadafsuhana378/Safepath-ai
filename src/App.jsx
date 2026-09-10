@@ -4,7 +4,7 @@ import {
   Landmark, Waves, ChevronRight, ChevronDown, Siren, Users, Check,
   ShieldAlert, ArrowLeft, Sun, Moon, TrendingUp, Route, Footprints,
   Phone, PhoneOff, Flag, Vibrate, Pause, Gauge, Satellite, MapIcon,
-  Star, X
+Star, X, ShieldCheck
 } from "lucide-react";
 import { BarChart, Bar, ResponsiveContainer, XAxis, Tooltip, Cell } from "recharts";
 
@@ -530,8 +530,9 @@ function NavScreen({
   sharedContacts, onOpenContacts, onSos, onStopAlert, onFakeCall, onHazard,
   shakeOn, onToggleShake, hazardPin, onExit,
 }) {
-  const r = routeFor(route, isNight, hazardPin ? 6 : 0);
-  const arrived = progress >= 1;
+const r = routeFor(route, isNight, hazardPin ? 6 : 0);
+const rerouteActive = !!hazardPin && route === "safe";
+const arrived = progress >= 1;
   return (
     <div className="flex flex-col h-full bg-white">
       <div className="flex items-center justify-between px-5 pt-4 pb-3">
@@ -549,6 +550,23 @@ function NavScreen({
 
       <div className="relative flex-1">
         <LiveMap city={city} route={r} progress={progress} view={mapView} hazardPin={hazardPin} />
+{rerouteActive && (
+  <div className="absolute top-3 left-5 right-5 z-10 rounded-xl border border-[#0D9488]/30 bg-white/95 px-3 py-2.5 shadow-sm">
+    <div className="flex items-center gap-2">
+      <div className="w-7 h-7 rounded-full bg-[#E6F6F4] flex items-center justify-center">
+        <ShieldCheck size={15} color="#0D9488" />
+      </div>
+      <div>
+        <p className="text-[11.5px] font-semibold text-[#101828]">
+          SafePath AI rerouted you
+        </p>
+        <p className="text-[10px] text-[#4A5468]">
+          Hazard detected — choosing a safer path
+        </p>
+      </div>
+    </div>
+  </div>
+)}
         <div className="absolute top-3 left-5 right-5 flex items-center justify-between">
           <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-full" style={{ background: `${r.color}1A`, color: r.color }}>
             ● {r.label} route
