@@ -22,6 +22,17 @@ import { BarChart, Bar, ResponsiveContainer, XAxis, Tooltip, Cell } from "rechar
 */
 
 const FONTS_LINK = "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap";
+
+const openGoogleDirections = (destination, city) => {
+  const url =
+    `https://www.google.com/maps/dir/?api=1` +
+    `&origin=${encodeURIComponent(city + ", Maharashtra")}` +
+    `&destination=${encodeURIComponent(destination + ", " + city + ", Maharashtra")}` +
+    `&travelmode=driving`;
+
+  window.open(url, "_blank");
+};
+
 function useFonts() {
   useEffect(() => {
     if (document.getElementById("sp-fonts")) return;
@@ -515,7 +526,7 @@ function QuickAction({ icon: Icon, label, onClick, active }) {
 }
 
 function NavScreen({
-  city, route, isNight, progress, whyOpen, setWhyOpen, mapView, setMapView,
+  city, dest, route, isNight, progress, whyOpen, setWhyOpen, mapView, setMapView,
   sharedContacts, onOpenContacts, onSos, onStopAlert, onFakeCall, onHazard,
   shakeOn, onToggleShake, hazardPin, onExit,
 }) {
@@ -581,6 +592,13 @@ function NavScreen({
             <ChevronRight size={13} color="#B0B8C6" />
           </div>
         </button>
+<button
+  onClick={() => openGoogleDirections(dest, city)}
+  className="w-full mt-3 py-2.5 rounded-xl border border-[#E2E7F0] bg-white flex items-center justify-center gap-2 text-[12px] font-semibold text-[#101828]"
+>
+  <Route size={15} color="#0D9488" />
+  Open directions in Google Maps
+</button>
 
         <div className="flex gap-2 mt-3">
           <QuickAction icon={Phone} label="Fake call" onClick={onFakeCall} />
@@ -854,9 +872,10 @@ export default function SafePathPrototype() {
   const [contactsOpen, setContactsOpen] = useState(false);
   const [sosStage, setSosStage] = useState(null); // null | 'confirm' | 'sent'
   const [stopAlert, setStopAlert] = useState(false);
-  const [hazardOpen, setHazardOpen] = useState(false);
-  const [hazardPin, setHazardPin] = useState(null);
-  const [toast, setToast] = useState("");
+const [hazardOpen, setHazardOpen] = useState(false);
+const [hazardPin, setHazardPin] = useState(null);
+const [rerouted, setRerouted] = useState(false);
+const [toast, setToast] = useState("");
   const [fakeCallStage, setFakeCallStage] = useState(null); // null | 'ringing' | 'active'
   const [callSeconds, setCallSeconds] = useState(0);
   const [shakeOn, setShakeOn] = useState(false);
@@ -1009,7 +1028,7 @@ export default function SafePathPrototype() {
         {screen === "nav" && (
           <>
             <NavScreen
-              city={activeCity} route={route} isNight={mode.isNight} progress={progress}
+city={activeCity} dest={dest} route={route} isNight={mode.isNight} progress={progress}
               whyOpen={whyOpen} setWhyOpen={setWhyOpen} mapView={mapView} setMapView={setMapView}
               sharedContacts={sharedContacts}
               onOpenContacts={() => { pauseTrip(); setContactsOpen(true); }}
@@ -1038,13 +1057,20 @@ export default function SafePathPrototype() {
             {hazardOpen && (
               <HazardSheet
                 onClose={() => { setHazardOpen(false); resumeTrip(); }}
-                onSubmit={(choice) => {
-                  setHazardOpen(false);
-                  setHazardPin(hazardCenter);
-                  setHazardsReportedCount((c) => c + 1);
-                  showToast("Reported — thanks, this helps others");
-                  resumeTrip();
-                }}
+onSubmit={(choice) => {
+  setHazardOpen(false);
+  setHazardPin(hazardCenter);
+  setHazardsReportedCount((c) => c + 1);
+
+  showToast("🤖 SafePath AI is analyzing the hazard...");
+
+setTimeout(() => {
+  setRerouted(true);
+  setRoute("safe");
+  showToast("🛡️ Safer route found — avoiding this hazard");
+  resumeTrip();
+}, 1800);
+}}
               />
             )}
 
@@ -1117,7 +1143,7 @@ export default function SafePathPrototype() {
 
         {screen === "arrived" && (
           <ArrivedScreen
-            city={activeCity} dest={dest} route={route} isNight={mode.isNight}
+city={activeCity} dest={dest} route={route} isNight={mode.isNight} progress={progress}
             hadHazard={!!hazardPin}
             rating={tripRating} setRating={setTripRating}
             feedback={tripFeedback} setFeedback={setTripFeedback}
