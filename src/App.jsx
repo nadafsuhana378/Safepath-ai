@@ -896,12 +896,6 @@ export default function SafePathPrototype() {
 
   useEffect(() => () => { clearInterval(intervalRef.current); clearInterval(callTimerRef.current); }, []);
 
-  useEffect(() => {
-    if (progress >= 1 && screen === "nav") {
-      const t = setTimeout(() => setScreen("arrived"), 700);
-      return () => clearTimeout(t);
-    }
-  }, [progress, screen]);
 
   const handleDone = () => {
     const r = routeFor(route, mode.isNight, hazardPin ? 6 : 0);
