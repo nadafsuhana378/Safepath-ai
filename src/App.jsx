@@ -1264,7 +1264,7 @@ function FakeCallOverlay({ stage, onAccept, onDecline, seconds }) {
 
 function PhoneFrame({ children }) {
   return (
-    <div className="relative w-[340px] h-[680px] rounded-[2.5rem] border-[6px] border-[#D8DEEA] bg-white shadow-[0_30px_80px_-20px_rgba(16,24,40,0.35)] overflow-hidden">
+<div className="relative w-full max-w-[1400px] h-[calc(100vh-180px)] min-h-[680px] rounded-[2.5rem] border-[6px] border-[#D8DEEA] bg-white shadow-[0_30px_80px_-20px_rgba(16,24,40,0.35)] overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-[#D8DEEA] rounded-b-2xl z-30" />
       <div className="relative w-full h-full overflow-hidden">{children}</div>
     </div>
